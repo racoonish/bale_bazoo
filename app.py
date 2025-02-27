@@ -60,17 +60,17 @@ async def handle_document(client, message):
             print("download completed")
             # Process video
             await downloading.edit_text("... در حال پردازش")
-            result = client_hf.predict(
+            job = client_hf.submit(
                 url=f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
                 clip_type="auto edit",
                 api_name="/main"
             )
-
+            await downloading.edit_text(f"{job.status().progress_data}")
             print("process completed")
-            if result.get("video"):
+            if job.result():
                 await client.send_video(
                     chat_id=message.chat.id,
-                    video=result["video"],
+                    video=job.result(),
                     caption="از شهر فرنگ برات ویدیو آوردم !!"
                 )
                 
