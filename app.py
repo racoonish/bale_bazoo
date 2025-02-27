@@ -60,22 +60,19 @@ async def handle_document(client, message):
             print("download completed")
             # Process video
             await downloading.edit_text("... در حال پردازش")
-            job = client_hf.submit(
+            result = client_hf.predict(
                 url=f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
                 clip_type="auto edit",
                 api_name="/main"
             )
-            await downloading.edit_text(f"{job.status().eta}")
-            print("process completed")
-            if job.result():
-                await client.send_video(
+            if result:
+                await bot.send_video(
                     chat_id=message.chat.id,
-                    video=job.result(),
+                    video=result["video"],
                     caption="از شهر فرنگ برات ویدیو آوردم !!"
                 )
-                
-            await downloading.edit_text("✅ پردازش با موفقیت انجام شد!")
-            user_states[user_id] = None
+                await downloading.edit_text("✅ پردازش با موفقیت انجام شد!")
+                user_states[user_id] = None
             
         except Exception as e:
             await downloading.edit_text(f"❌ خطا در پردازش: {str(e)}")
