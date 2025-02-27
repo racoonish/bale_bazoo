@@ -65,7 +65,7 @@ async def handle_document(client, message):
                 clip_type="auto edit",
                 api_name="/main"
             )
-            await downloading.edit_text(f"{job.status().progress_data}")
+            await downloading.edit_text(f"{job.status().eta}")
             print("process completed")
             if job.result():
                 await client.send_video(
