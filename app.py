@@ -1,4 +1,4 @@
-Seyed Mamareza, [28.02.25 19:32]
+
 chat_id=callback_query.message.chat.id,
                 text="لطفا رنگ مورد نظر را از کیبورد انتخاب کنید.",
                 reply_markup=InlineKeyboard(
