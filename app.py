@@ -65,6 +65,7 @@ async def handle_document(client, message):
                 clip_type="auto edit",
                 api_name="/main"
             )
+            
             if result:
                 await bot.send_video(
                     chat_id=message.chat.id,
