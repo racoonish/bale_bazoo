@@ -205,12 +205,6 @@ async def handle_document(message):
                 )
             )
 
-
-await bot.send_message(
-                chat_id=message.chat.id,
-                text="برای ناوبری از کیبورد زیر استفاده کنید.",
-                reply_markup=home_keyboard
-            )
         except Exception as e:
             await downloading.edit_text(f"❌ خطا در پردازش: {str(e)}")
             user_states[user_id][0] = 'awaiting_choose'
