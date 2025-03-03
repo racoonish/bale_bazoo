@@ -143,9 +143,9 @@ async def handle_callbacks(callback_query):
                     [(" 🟡 زرد", "yellow")]
                     )
                 )
-            elif callback_query.data == "sub_def":
-                print(1)
-                user_states[user_id][0] = 'awaiting_document'
+        elif callback_query.data == "sub_def":
+            print(1)
+            user_states[user_id][0] = 'awaiting_document'
         elif callback_query.data == "dub_def":
              print(2)
              user_states[user_id][0] = 'awaiting_document'
