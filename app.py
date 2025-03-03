@@ -10,7 +10,8 @@ bot = Client("640108494:Y4Hr2wDc8hdMjMUZPJ5DqL7j8GfSwJIETGpwMH12")
 user_states = {}
 user_parametrs_sub={}
 user_parametrs_dub={}
- 
+
+
 # Define reply keyboards
 home_keyboard = ReplyKeyboard(["خانه"])
 #back_home_keyboard = ReplyKeyboard(["بازگشت", "خانه"])
