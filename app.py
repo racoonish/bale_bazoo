@@ -4,8 +4,8 @@ from balethon.objects import InlineKeyboard, ReplyKeyboard
 from gradio_client import Client as C
 from gradio_client import handle_file
 
-client_hf = C("rayesh/bale_clean")
-bot = Client("1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz")
+client_hf = C("https://rayesh-auto-content.liara.run/")
+bot = Client("640108494:Y4Hr2wDc8hdMjMUZPJ5DqL7j8GfSwJIETGpwMH12")
 
 user_states = {}
 user_parametrs_sub={}
