@@ -146,6 +146,8 @@ async def handle_callbacks(callback_query):
         elif callback_query.data == "sub_def":
             print(1)
             user_states[user_id][0] = 'awaiting_document'
+            user_parametrs_sub[user_id]=['yellow']
+            user_parametrs_sub[user_id].append("arial")
         elif callback_query.data == "dub_def":
              print(2)
              user_states[user_id][0] = 'awaiting_document'
