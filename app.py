@@ -3,8 +3,10 @@ from balethon.conditions import document, private, text, video
 from balethon.objects import InlineKeyboard, ReplyKeyboard
 from gradio_client import Client as C
 from gradio_client import handle_file
+import json
 
-client_hf = C("https://rayesh-auto-content.liara.run/")
+
+client_hf = C("http://127.0.0.1:7860/")
 bot = Client("640108494:Y4Hr2wDc8hdMjMUZPJ5DqL7j8GfSwJIETGpwMH12")
 
 user_states = {}
@@ -224,35 +226,52 @@ async def handle_document(message):
     if user_states[user_id][0] == 'awaiting_document': 
         downloading = await message.reply("در صف پردازش . . . 💡")
         try:
+            
+            # Get the file details from the bot using your usual method.
+            file = await bot.get_file(message.video.id)
+            file_path = file.path
+            # Prepare the file URL; adjust it to your token and file path.
+            video_url = f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
+            
+            # Send an initial progress message so the user sees something.
             #mood
+            # Set up your payload; note that you might need to indicate that you want a streaming response.
+
             if user_states[user_id][1]=="dub":
                     
                 file = await bot.get_file(message.video.id)
                 file_path = file.path
-                result = client_hf.predict(
+                job = client_hf.predict(
                     url=f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
                     clip_type=user_states[user_id][1],
                     parameters=user_parametrs_dub,
-                    api_name="/main"
+                    api_name="/main",
                 )
             elif user_states[user_id][1]=="sub":
                     
                 file = await bot.get_file(message.video.id)
                 file_path = file.path
-                result = client_hf.predict(
+                job = client_hf.submit(
                     url=f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
                     clip_type=user_states[user_id][1],
                     parameters=f"{user_parametrs_sub[user_id][0]},{user_parametrs_sub[user_id][1]}",
-                    api_name="/main"
+                    api_name="/main",
                 )
-            
-            await bot.send_video(
-                chat_id=message.chat.id,
-                video=result["video"],
-                caption="🎭 شهر فرنگه، از همه رنگه!✨ پردازش ویدیوی شما تموم شد! ✨"
-            )
-            await downloading.edit_text("✅ پردازش با موفقیت انجام شد!")
-            user_states[user_id][0] = 'awaiting_choose'
+            print(job.status())
+            final_video = None
+            for update in job:
+                progress_msg, video_output = update
+                if progress_msg:
+                    await downloading.edit_text(f"وضعیت: {progress_msg}")
+                if video_output is not None:
+                    final_video = video_output
+            print(final_video)
+            if final_video:
+                await bot.send_video(
+                    chat_id=message.chat.id,
+                    video=final_video["video"],
+                    caption="🎭 شهر فرنگه، از همه رنگه!✨ پردازش ویدیوی شما تموم شد! ✨"
+                )
             await bot.send_message(
                 chat_id=message.chat.id,
                 text="برای ادامه، یک گزینه را انتخاب کنید:",
