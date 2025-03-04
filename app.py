@@ -241,7 +241,7 @@ async def handle_document(message):
                     
                 file = await bot.get_file(message.video.id)
                 file_path = file.path
-                job = client_hf.predict(
+                job = client_hf.submit(
                     url=f"https://tapi.bale.ai/file/bot1261816176:T4jSrvlJiCfdV5UzUkpywN2HFrzef1IZJs5URAkz/{file_path}",
                     clip_type=user_states[user_id][1],
                     parameters=user_parametrs_dub,
