@@ -41,14 +41,9 @@ async def answer_message(message):
 🔗 همین حالا امتحان کن!""",
             reply_markup=InlineKeyboard(
                 [("تولید زیرنویس 📜 ", "sub")],
-                [("دوبله فارسی 🎬 ", "dub")],
+                [("دوبله فارسی(در حال توسعه) 🎬 ", "a")],
                 [(" توضیحات بیشتر 📖 ", "toturial")]
             )
-        )
-        await bot.send_message(
-            chat_id=message.chat.id,
-            text="برای ناوبری از کیبورد زیر استفاده کنید.",
-            reply_markup=home_keyboard
         )
     
 # Handle inline keyboard selections
@@ -62,7 +57,7 @@ async def handle_callbacks(callback_query):
         )
     print('callback_query')
     #print(user_states[user_id][0]+"2\n")
-    if user_states[user_id][0] == 'awaiting_choose':
+    if user_states[user_id][0] == 'awaiting_choose' or 'awaiting_response' :
         print("callback choose")
         if callback_query.data == "toturial":
             await bot.send_message(
@@ -70,7 +65,7 @@ async def handle_callbacks(callback_query):
                 text="""🎬 راهنمای سریع "شهر فرنگ"!
 
 🔹 مرحله ۱: انتخاب نوع تبدیل
-🎙 دوبله فارسی یا 📜 زیرنویس فارسی؟
+🎙 دوبله فارسی(در حال توسعه) یا 📜 زیرنویس فارسی؟
 
 🔹 مرحله ۲: سریع یا پیشرفته؟
 ⚡️ سریع (بی‌دردسر و فوری)
@@ -78,11 +73,9 @@ async def handle_callbacks(callback_query):
 
 🔹 مرحله ۳: آپلود ویدیو
 ⏳ کمی صبر کن تا هوش مصنوعی جادو کنه! ✨
-
-💡 نکته: ما همیشه در حال بهتر کردن "شهر فرنگ" هستیم، نظرت برامون مهمه!🚀 شروع کن و محتوای حرفه‌ای بساز!""",
+""",
                 reply_markup=InlineKeyboard(
                 [("تولید زیرنویس ", "sub")],
-                [("دوبله فارسی", "dub")]
                
             )
         )
@@ -98,7 +91,7 @@ async def handle_callbacks(callback_query):
             text="لطفا یک گزینه را از کیبورد انتخاب کنید.",
             reply_markup=InlineKeyboard(
                     [("تولید زیرنویس سریع ⚡️", "sub_def")],
-                    [("تولید زیرنویس پیشرفته ⚙️", "sub_custome")]
+                    [("(به زودی)تولید زیرنویس پیشرفته ⚙️", "b")]
                     ),
           #  reply_markup=home_keyboard
             )
@@ -216,7 +209,7 @@ async def handle_callbacks(callback_query):
     if user_states[user_id][0] == 'awaiting_document':         
         await bot.send_message(
                 chat_id=callback_query.message.chat.id,
-                text="لطفا ویدیو مورد نظر را آپلود کنید"
+                text="لطفا ویدیو انگلیسی مورد نظر خود را آپلود کنید"
         )
 # Handle video uploads
 @bot.on_message(video)
@@ -272,12 +265,13 @@ async def handle_document(message):
                     video=final_video["video"],
                     caption="🎭 شهر فرنگه، از همه رنگه!✨ پردازش ویدیوی شما تموم شد! ✨"
                 )
+                 user_states[user_id][0] = 'awaiting_response'
             await bot.send_message(
                 chat_id=message.chat.id,
                 text="برای ادامه، یک گزینه را انتخاب کنید:",
                 reply_markup=InlineKeyboard(
-                [("تولید زیرنویس 📜 ", "sub")],
-                [("دوبله فارسی 🎬 ", "dub")]
+                [("تولید زیرنویس 📜 ", "sub")]
+              
             )
         )
             reply_markup=home_keyboard
@@ -288,8 +282,7 @@ async def handle_document(message):
                 chat_id=message.chat.id,
                 text="برای ادامه، یک گزینه را انتخاب کنید:",
              reply_markup=InlineKeyboard(
-                [("تولید زیرنویس 📜 ", "sub")],
-                [("دوبله فارسی 🎬 ", "dub")]
+                [("تولید زیرنویس 📜 ", "sub")]
             )
         )
             reply_markup=home_keyboard
